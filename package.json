@@ -1,0 +1,29 @@
+{
+  "name": "bjolk",
+  "version": "1.0.0",
+  "description": "Wrapper for chats",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . --overwrite --out=build --icon=assets/icons/icon-512.icns"
+  },
+  "repository": "https://github.com/juhq/bjolk",
+  "author": "Juha Tauriainen <juha@bin.fi>",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^4.1.4"
+  },
+  "devDependencies": {
+    "babel-eslint": "10.0.1",
+    "babel-preset-env": "1.7.0",
+    "electron-packager": "^13.1.1",
+    "eslint": "5.16.0",
+    "eslint-config-airbnb": "17.1.0",
+    "eslint-config-prettier": "4.2.0",
+    "eslint-plugin-import": "2.17.2",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-react": "^7.13.0",
+    "prettier": "1.17.0"
+  }
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bjolk</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" >
+  </head>
+  <body>
+    <div class="window-draggable"></div>
+    <div id="container">
+      <div class="sidebar">
+        <div class="chats"></div>
+        <div class="tools">
+          <button class="settings-button">Settings</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="chat-container"></div>
+
+        <div id="slacks"></div>
+
+        <div id="settings" class="chat-window">
+          <div>
+            <h1>Settings</h1>
+
+            <p>
+              <form id="add-slack">
+                <input type="text" id="slack-channel-name" />
+                <button type="submit">Add new slack</button>
+              </form>
+            </p>
+
+            <h3>Services</h3>
+            <h6>Toggle service visibility</h6>
+            <div id="service-list"></div>
+            <h3>Slacks</h3>
+            <div id="slack-list"></div>
+
+            <p><button id="reset-localstorage">Reset localstorage (dev purposes)</button></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      require('../renderer/renderer.js')
+    </script>
+  </body>
+</html>
