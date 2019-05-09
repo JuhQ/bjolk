@@ -40,7 +40,9 @@ const createWindow = () => {
   })
 
   ipcMain.on('notification-count', (event, count) => {
-    app.dock.setBadge(count ? `${count}` : '')
+    if (process.platform === 'darwin') {
+      app.dock.setBadge(count ? `${count}` : '')
+    }
   })
 
   createMenu(mainWindow)
