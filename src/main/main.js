@@ -1,5 +1,7 @@
-const { app, BrowserWindow, ipcMain, shell, Menu } = require('electron')
+const { app, BrowserWindow, ipcMain, shell, session } = require('electron')
 const path = require('path')
+
+const createMenu = require('./menu')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -10,7 +12,7 @@ const createWindow = () => {
     width: 1080,
     height: 700,
     frame: false,
-    icon: path.join(__dirname, 'assets/icons/icon-128.png.icns'),
+    icon: path.join(__dirname, 'assets/icons/icon-512.icns'),
     webPreferences: {
       nodeIntegration: true,
       // contextIsolation: false,
@@ -18,11 +20,12 @@ const createWindow = () => {
   })
 
   // for whatsapp?
-  // session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-  //   details.requestHeaders["User-Agent"] =
-  //     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.128";
-  //   callback({ cancel: false, requestHeaders: details.requestHeaders });
-  // });
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    // eslint-disable-next-line
+    details.requestHeaders['User-Agent'] =
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36'
+    callback({ cancel: false, requestHeaders: details.requestHeaders })
+  })
 
   mainWindow.loadFile('./src/main/index.html')
 
@@ -40,43 +43,7 @@ const createWindow = () => {
     app.dock.setBadge(count ? `${count}` : '')
   })
 
-  const template = [
-    {
-      label: 'Application',
-      submenu: [
-        {
-          label: 'About Application',
-          selector: 'orderFrontStandardAboutPanel:',
-        },
-        { type: 'separator' },
-        {
-          label: 'Quit',
-          accelerator: 'Command+Q',
-          click() {
-            app.quit()
-          },
-        },
-      ],
-    },
-    {
-      label: 'Edit',
-      submenu: [
-        { label: 'Undo', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
-        { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' },
-        { type: 'separator' },
-        { label: 'Cut', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
-        { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
-        { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
-        {
-          label: 'Select All',
-          accelerator: 'CmdOrCtrl+A',
-          selector: 'selectAll:',
-        },
-      ],
-    },
-  ]
-
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+  createMenu(mainWindow)
 }
 
 app.setName('Bjolk')
