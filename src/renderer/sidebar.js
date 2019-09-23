@@ -36,7 +36,8 @@ const createSideBar = () => {
       .map(
         ({ name, url }) =>
           `<button id="button-${name}" name="${name}">
-            <img src="${favicon(url)}"><br/>
+            <img src="${favicon(url)}">
+            <br/>
             ${name}
           </button>`,
       )
