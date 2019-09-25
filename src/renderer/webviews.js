@@ -1,4 +1,9 @@
-const { getServices, getActiveChat, setActiveChat } = require('./localstorage')
+const {
+  getServices,
+  getActiveChat,
+  setActiveChat,
+  getDoNotDisturb,
+} = require('./localstorage')
 const {
   setHtml,
   appendHtml,
@@ -54,8 +59,10 @@ const listenToSingleWebview = webview => {
         setActiveWindowFromKeyDown(event.channel.value)
       }
 
-      if (event.channel.eventType === 'chat-notification') {
-        setChatButtonNotificationCount(event.channel)
+      if (!getDoNotDisturb()) {
+        if (event.channel.eventType === 'chat-notification') {
+          setChatButtonNotificationCount(event.channel)
+        }
       }
     })
 

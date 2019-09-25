@@ -7,6 +7,7 @@ const {
   getActiveChat,
   getServices,
   resetActiveChat,
+  setDoNotDisturb,
   removeSlackChannel,
 } = require('./localstorage')
 const { createSideBar, clearSideBarEventListeners } = require('./sidebar')
@@ -110,6 +111,7 @@ const handleServiceShowing = () => {
     }),
   )
 }
+
 const handleServiceHiding = () => {
   document.querySelectorAll('.hide-service').forEach(element =>
     element.addEventListener('click', ({ target }) => {
@@ -125,6 +127,13 @@ const handleServiceHiding = () => {
   )
 }
 
+const handleDoNotDisturb = () => {
+  document.querySelector('#do-not-disturb').addEventListener('click', () => {
+    setDoNotDisturb()
+    alert('Notifications disabled for 8 hours')
+  })
+}
+
 const settingsPageInit = () => {
   handleResetLocalstorageButton()
   handleSlackChannelCreation()
@@ -132,6 +141,7 @@ const settingsPageInit = () => {
   listSlackChannels()
   handleServiceShowing()
   handleServiceHiding()
+  handleDoNotDisturb()
 }
 
 module.exports = { settingsPageInit }
