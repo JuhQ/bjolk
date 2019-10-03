@@ -1,4 +1,3 @@
-
 #add-slack {
   display: inline-flex;
   align-items: center;
@@ -21,7 +20,7 @@
 }
 
 #add-slack button:hover {
-background-color: var(--secondary-color);
+  background-color: var(--secondary-color);
 }
 
 #add-slack input {
@@ -30,7 +29,7 @@ background-color: var(--secondary-color);
   padding: 10px;
   font-size: 18px;
   border: 1px solid var(--main-color);
-  transition: all 0.30s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 #slack-channel-name:focus {

@@ -1,6 +1,6 @@
 :root {
   --text-color: #1f1e1e;
-  --main-color: #2196F3;
+  --main-color: #2196f3;
   --secondary-color: #1c75be;
   --accent-color: #0079eb;
   --light-blue: #97d0ff;
@@ -91,7 +91,7 @@ body {
   height: 34px;
 }
 
-.switch input { 
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;

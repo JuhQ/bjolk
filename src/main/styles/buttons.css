@@ -13,14 +13,13 @@
   outline: none;
 }
 
-
 .bjolk-button:hover {
-    padding: 10px 15px;
-    border-radius: 30px;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    background-color: var(--secondary-color);
+  padding: 10px 15px;
+  border-radius: 30px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  background-color: var(--secondary-color);
   color: white;
   border: none;
   cursor: pointer;
