@@ -49,12 +49,22 @@ const createWindow = () => {
 
 app.setName('Bjolk')
 
+let previousUrl = null
+
 // open links in default browser
 app.on('web-contents-created', (_, contents) => {
   if (contents.getType() === 'webview') {
     contents.on('new-window', (event, url) => {
-      event.preventDefault()
-      shell.openExternal(url)
+      if (url !== previousUrl) {
+        event.preventDefault()
+        shell.openExternal(url)
+      }
+
+      // hack for flowdock
+      previousUrl = url
+      setTimeout(() => {
+        previousUrl = null
+      }, 1000)
     })
   }
 })

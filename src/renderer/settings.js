@@ -7,6 +7,7 @@ const {
   getActiveChat,
   getServices,
   resetActiveChat,
+  setDoNotDisturb,
   removeSlackChannel,
   defaultVisibleChats,
 } = require('./localstorage')
@@ -124,12 +125,20 @@ const handleServiceShowing = () => {
   )
 }
 
+const handleDoNotDisturb = () => {
+  document.querySelector('#do-not-disturb').addEventListener('click', () => {
+    setDoNotDisturb()
+    alert('Notifications disabled for 8 hours')
+  })
+}
+
 const settingsPageInit = () => {
   handleResetLocalstorageButton()
   handleSlackChannelCreation()
   handleChatVisibility()
   listSlackChannels()
   handleServiceShowing()
+  handleDoNotDisturb()
 }
 
 module.exports = { settingsPageInit }
