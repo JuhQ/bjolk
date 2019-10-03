@@ -9,7 +9,6 @@ const {
   resetActiveChat,
   setDoNotDisturb,
   removeSlackChannel,
-  defaultVisibleChats,
   getVisibleServices,
 } = require('./localstorage')
 const { createSideBar, clearSideBarEventListeners } = require('./sidebar')
