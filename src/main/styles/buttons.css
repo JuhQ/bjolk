@@ -1,0 +1,44 @@
+.bjolk-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 30px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  background-color: var(--main-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+
+.bjolk-button:hover {
+    padding: 10px 15px;
+    border-radius: 30px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.bjolk-button-icon {
+  margin-left: 10px;
+}
+
+.bjolk-button-icon svg {
+  height: 15px;
+}
+
+.bjolk-delete-button {
+  background-color: #ad2e2e;
+}
+
+.bjolk-delete-button:hover {
+  background-color: #831e1e;
+}

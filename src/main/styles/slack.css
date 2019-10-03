@@ -1,0 +1,40 @@
+
+#add-slack {
+  display: inline-flex;
+  align-items: center;
+}
+
+#add-slack button {
+  padding: 10px 15px;
+  margin-left: -10px;
+  margin-top: -1px;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  background-color: var(--main-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+#add-slack button:hover {
+background-color: var(--secondary-color);
+}
+
+#add-slack input {
+  width: 250px;
+  height: 14px;
+  padding: 10px;
+  font-size: 18px;
+  border: 1px solid var(--main-color);
+  transition: all 0.30s ease-in-out;
+}
+
+#slack-channel-name:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 5px 0px var(--secondary-color);
+}

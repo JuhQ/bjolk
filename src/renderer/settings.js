@@ -10,6 +10,7 @@ const {
   setDoNotDisturb,
   removeSlackChannel,
   defaultVisibleChats,
+  getVisibleServices,
 } = require('./localstorage')
 const { createSideBar, clearSideBarEventListeners } = require('./sidebar')
 const { addWebview } = require('./webviews')
@@ -96,7 +97,7 @@ const handleChatVisibility = () => {
           <p>${name}</p>
           <label class="switch">
             <input type="checkbox" ${
-              defaultVisibleChats.includes(name) ? 'checked' : ''
+              getVisibleServices().includes(name) ? 'checked' : ''
             } name="${name}" class="show-service">
             <span class="slider round"></span>
           </label>
