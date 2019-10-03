@@ -104,5 +104,5 @@ ipcRenderer.on('ping-webview', (event, id) => {
     notificationChecks[serviceName.includes('slack') ? 'slack' : serviceName]
 
   service()
-  // setInterval(service, 1000)
+  setInterval(service, 1000)
 })
