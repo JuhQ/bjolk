@@ -80,6 +80,7 @@ module.exports = {
   getVisibleServices,
   addVisibleService,
   removeVisibleService,
+  defaultVisibleChats,
   setDoNotDisturb,
   getDoNotDisturb,
 }
