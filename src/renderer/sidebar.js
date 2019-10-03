@@ -36,7 +36,7 @@ const createSideBar = () => {
       .map(
         ({ name, url }) =>
           `<button id="button-${name}" name="${name}">
-            <img src="${favicon(url)}">
+            <img src="${favicon(url)}" class="chat-icon">
             <br/>
             ${name}
           </button>`,

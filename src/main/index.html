@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <title>Bjolk</title>
-    <link rel="stylesheet" type="text/css" href="styles.css" >
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
   </head>
   <body>
     <div class="window-draggable"></div>
@@ -11,7 +12,9 @@
       <div class="sidebar">
         <div class="chats"></div>
         <div class="tools">
-          <button class="settings-button">Settings</button>
+          <button class="settings-button">
+            <span class="settings-icon"><i data-feather="settings"></i></span>
+          </button>
         </div>
       </div>
       <div class="content">
@@ -22,7 +25,11 @@
         <div id="settings" class="chat-window">
           <div>
             <h1>Settings</h1>
-
+       
+            <h3>Service visibility</h3>
+            <div id="service-list"></div>
+            
+            <h3>Slack</h3>
             <p>
               <form id="add-slack">
                 <input type="text" id="slack-channel-name" />
@@ -30,19 +37,16 @@
               </form>
             </p>
 
-            <h3>Services</h3>
-            <h6>Toggle service visibility</h6>
-            <div id="service-list"></div>
-            <h3>Slacks</h3>
             <div id="slack-list"></div>
 
-            <p><button id="reset-localstorage">Reset localstorage (dev purposes)</button></p>
+            <p><button class="bjolk-button" id="reset-localstorage">Reset localstorage (dev purposes)</button></p>
           </div>
         </div>
       </div>
     </div>
     <script>
       require('../renderer/renderer.js')
+      feather.replace()
     </script>
   </body>
 </html>

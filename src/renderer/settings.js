@@ -8,6 +8,7 @@ const {
   getServices,
   resetActiveChat,
   removeSlackChannel,
+  defaultVisibleChats,
 } = require('./localstorage')
 const { createSideBar, clearSideBarEventListeners } = require('./sidebar')
 const { addWebview } = require('./webviews')
@@ -24,10 +25,11 @@ const printList = () => {
   const html = getSlackChannels()
     .map(
       channel =>
-        `<p>
-          ${channel}
-          <button class="delete-slack" name="${channel}">Delete</button>
-        </p>`,
+        `
+        <div class="slack-service-list">
+          <p>${channel}</p>
+          <button class="bjolk-button bjolk-delete-button delete-slack" name="${channel}">Delete</button>
+        </div>`,
     )
     .join('')
 
@@ -89,11 +91,15 @@ const handleChatVisibility = () => {
   const html = getServices()
     .map(
       ({ name }) =>
-        `<p>
-          ${name}
-          <button class="hide-service" name="${name}">hide</button>
-          <button class="show-service" name="${name}">show</button>
-        </p>`,
+        `<div class="settings-service">
+          <p>${name}</p>
+          <label class="switch">
+            <input type="checkbox" ${
+              defaultVisibleChats.includes(name) ? 'checked' : ''
+            } name="${name}" class="show-service">
+            <span class="slider round"></span>
+          </label>
+        </div>`,
     )
     .join('')
 
@@ -104,23 +110,16 @@ const handleServiceShowing = () => {
   document.querySelectorAll('.show-service').forEach(element =>
     element.addEventListener('click', ({ target }) => {
       const name = target.getAttribute('name')
-
-      addVisibleService(name)
-      createSideBar()
-    }),
-  )
-}
-const handleServiceHiding = () => {
-  document.querySelectorAll('.hide-service').forEach(element =>
-    element.addEventListener('click', ({ target }) => {
-      const name = target.getAttribute('name')
-
-      if (getActiveChat() === name) {
-        resetActiveChat()
+      if (target.checked === false) {
+        if (getActiveChat() === name) {
+          resetActiveChat()
+        }
+        removeVisibleService(name)
+        createSideBar()
+      } else {
+        addVisibleService(name)
+        createSideBar()
       }
-
-      removeVisibleService(name)
-      createSideBar()
     }),
   )
 }
@@ -131,7 +130,6 @@ const settingsPageInit = () => {
   handleChatVisibility()
   listSlackChannels()
   handleServiceShowing()
-  handleServiceHiding()
 }
 
 module.exports = { settingsPageInit }
