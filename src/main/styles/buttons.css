@@ -21,10 +21,10 @@
     text-transform: uppercase;
     letter-spacing: 0.3px;
     background-color: var(--secondary-color);
-  color: white;
-  border: none;
-  cursor: pointer;
-  outline: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+    outline: none;
 }
 
 .bjolk-button-icon {
