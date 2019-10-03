@@ -28,7 +28,6 @@ body {
   z-index: 0;
   max-width: 100%;
   overflow: hidden;
-  border: solid 1px var(--grey-color);
 }
 
 .sidebar {
