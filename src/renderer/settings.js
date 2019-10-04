@@ -18,7 +18,7 @@ const { getSlackUrl, setHtml } = require('./utils')
 const handleResetLocalstorageButton = () =>
   document
     .querySelector('#reset-localstorage')
-    .addEventListener('click', () => resetLocalStorage())
+    .addEventListener('click', resetLocalStorage)
 
 const printList = () => {
   const container = document.getElementById('slack-list')
@@ -88,7 +88,7 @@ const handleSlackChannelCreation = () => {
 
 const handleChatVisibility = () => {
   const container = document.getElementById('service-list')
-
+  const visibleServices = getVisibleServices()
   const html = getServices()
     .map(
       ({ name }) =>
@@ -96,7 +96,7 @@ const handleChatVisibility = () => {
           <p>${name}</p>
           <label class="switch">
             <input type="checkbox" ${
-              getVisibleServices().includes(name) ? 'checked' : ''
+              visibleServices.includes(name) ? 'checked' : ''
             } name="${name}" class="show-service">
             <span class="slider round"></span>
           </label>
@@ -116,11 +116,11 @@ const handleServiceShowing = () => {
           resetActiveChat()
         }
         removeVisibleService(name)
-        createSideBar()
       } else {
         addVisibleService(name)
-        createSideBar()
       }
+
+      createSideBar()
     }),
   )
 }
@@ -128,6 +128,7 @@ const handleServiceShowing = () => {
 const handleDoNotDisturb = () => {
   document.querySelector('#do-not-disturb').addEventListener('click', () => {
     setDoNotDisturb()
+    // eslint-disable-next-line
     alert('Notifications disabled for 8 hours')
   })
 }

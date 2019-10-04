@@ -42,12 +42,14 @@ const activateCurrentChat = () => {
 const setChatButtonNotificationCount = ({ service, url, value }) => {
   const button = document.querySelector(`button#button-${service}`)
   if (button) {
-    button.count = value
-    const faviconImage = `<img src="${favicon(url)}"><br/>`
-    if (value) {
-      setHtml(button, `${faviconImage} ${service} (${value})`)
-    } else {
-      setHtml(button, `${faviconImage} ${service}`)
+    if (value !== button.count) {
+      button.count = value
+      const faviconImage = `<img src="${favicon(url)}"><br/>`
+      if (value) {
+        setHtml(button, `${faviconImage} ${service} (${value})`)
+      } else {
+        setHtml(button, `${faviconImage} ${service}`)
+      }
     }
   }
 }
@@ -75,10 +77,12 @@ const listenToWebviews = () => {
     .querySelectorAll('.chat-container webview')
     .forEach(listenToSingleWebview)
 }
+const userAgent =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36'
 
 const webviewHtml = ({ name, url }) => `<webview
     src="${url}"
-    useragent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36"
+    useragent="${userAgent}"
     preload="../renderer/preload.js"
     id="service-${name}"
     class="chat-window">

@@ -7,18 +7,18 @@ const createMenu = require('./menu')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-const createWindow = () => {
-  mainWindow = new BrowserWindow({
-    width: 1080,
-    height: 700,
-    frame: false,
-    icon: path.join(__dirname, 'assets/icons/icon-512.icns'),
-    webPreferences: {
-      nodeIntegration: true,
-      // contextIsolation: false,
-    },
-  })
+const browserWindowConfig = {
+  width: 1080,
+  height: 700,
+  frame: false,
+  icon: path.join(__dirname, 'assets/icons/icon-512.icns'),
+  webPreferences: {
+    nodeIntegration: true,
+    // contextIsolation: false,
+  },
+}
 
+const whatsappHack = () => {
   // for whatsapp?
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     // eslint-disable-next-line
@@ -26,6 +26,12 @@ const createWindow = () => {
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36'
     callback({ cancel: false, requestHeaders: details.requestHeaders })
   })
+}
+
+const createWindow = () => {
+  mainWindow = new BrowserWindow(browserWindowConfig)
+
+  whatsappHack()
 
   mainWindow.loadFile('./src/main/index.html')
   // Open the DevTools.
@@ -38,11 +44,11 @@ const createWindow = () => {
     mainWindow = null
   })
 
-  ipcMain.on('notification-count', (event, count) => {
-    if (process.platform === 'darwin') {
+  if (process.platform === 'darwin') {
+    ipcMain.on('notification-count', (event, count) => {
       app.dock.setBadge(count ? `${count}` : '')
-    }
-  })
+    })
+  }
 
   createMenu(mainWindow)
 }
@@ -51,8 +57,7 @@ app.setName('Bjolk')
 
 let previousUrl = null
 
-// open links in default browser
-app.on('web-contents-created', (_, contents) => {
+const onWebContentsCreated = (_, contents) => {
   if (contents.getType() === 'webview') {
     contents.on('new-window', (event, url) => {
       if (url !== previousUrl) {
@@ -67,7 +72,10 @@ app.on('web-contents-created', (_, contents) => {
       }, 1000)
     })
   }
-})
+}
+
+// open links in default browser
+app.on('web-contents-created', onWebContentsCreated)
 
 app.on('ready', createWindow)
 

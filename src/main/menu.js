@@ -1,4 +1,4 @@
-const { app, Menu } = require('electron')
+const { app, Menu, shell } = require('electron')
 
 module.exports = mainWindow => {
   const template = [
@@ -53,6 +53,17 @@ module.exports = mainWindow => {
           selector: 'toggledevtools:',
           click: () => {
             mainWindow.webContents.toggleDevTools()
+          },
+        },
+      ],
+    },
+    {
+      label: 'Contribute',
+      submenu: [
+        {
+          label: 'GitHub repository',
+          click: () => {
+            shell.openExternal('https://github.com/JuhQ/bjolk')
           },
         },
       ],

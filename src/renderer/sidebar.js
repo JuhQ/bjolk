@@ -23,6 +23,12 @@ const activateChatScreen = ({ currentTarget }) => {
   setActiveChatScreen(name)
 }
 
+const createSideBarButton = ({ name, url }) =>
+  `<button id="button-${name}" name="${name}">
+    <img src="${favicon(url)}" class="chat-icon"><br/>
+    ${name}
+  </button>`
+
 const createSideBar = () => {
   const sidebar = document.querySelector('.sidebar .chats')
   const visibleServices = getVisibleServices()
@@ -32,16 +38,7 @@ const createSideBar = () => {
   )
 
   if (list.length) {
-    const html = list
-      .map(
-        ({ name, url }) =>
-          `<button id="button-${name}" name="${name}">
-            <img src="${favicon(url)}" class="chat-icon">
-            <br/>
-            ${name}
-          </button>`,
-      )
-      .join('')
+    const html = list.map(createSideBarButton).join('')
 
     setHtml(sidebar, html)
 
