@@ -1,7 +1,10 @@
 const { remote } = require('electron')
+const { sendNotification } = require('./utils')
 
 const webContents = remote.getCurrentWebContents()
 const { session } = webContents
+
+const selector = '.P6z4j'
 
 // All credit to Franz for whatsapp fix
 // https://github.com/meetfranz/recipe-whatsapp/blob/master/webview.js
@@ -13,6 +16,10 @@ const checkWhatsapp = () => {
       window.location.reload()
     }
   }, 1000)
+
+  const value = document.querySelectorAll(selector).length
+
+  sendNotification({ service: 'whatsapp', value })
 
   window.addEventListener('beforeunload', async () => {
     try {
