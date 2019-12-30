@@ -37,6 +37,11 @@ body {
   border-right: var(--grey-color) solid 1px;
 }
 
+.sidebar .chats {
+  overflow: scroll;
+  height: calc(100% - 80px);
+}
+
 .sidebar button {
   width: 100%;
   min-height: 80px;
