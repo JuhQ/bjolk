@@ -8,4 +8,5 @@ module.exports = [
     url: 'https://www.linkedin.com/messaging/',
   },
   { name: 'reddit', url: 'https://www.reddit.com/chat/channel/' },
+  { name: 'discord', url: 'https://discord.com/app' },
 ]
