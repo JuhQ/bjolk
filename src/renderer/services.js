@@ -7,4 +7,5 @@ module.exports = [
     name: 'linkedin',
     url: 'https://www.linkedin.com/messaging/',
   },
+  { name: 'reddit', url: 'https://www.reddit.com/chat/channel/' },
 ]
