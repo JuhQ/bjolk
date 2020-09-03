@@ -38,8 +38,11 @@ body {
 }
 
 .sidebar .chats {
-  overflow-y: scroll;
   height: calc(100% - 80px);
+}
+
+.sidebar:hover .chats {
+  overflow-y: scroll;
 }
 
 .sidebar button {
