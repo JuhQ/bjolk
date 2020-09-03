@@ -11,23 +11,23 @@ const appendUnique = ({ key, value, fn }) =>
   setLocalstorage(key, filterDuplicates([...fn(), value]))
 
 const removeFromList = ({ key, listfn, value }) =>
-  setLocalstorage(key, listfn().filter(negate(name => name === value)))
+  setLocalstorage(key, listfn().filter(negate((name) => name === value)))
 
 const getActiveChat = () => getLocalstorage('active-chat', services[0].name)
-const setActiveChat = service => setLocalstorage('active-chat', service)
+const setActiveChat = (service) => setLocalstorage('active-chat', service)
 const resetActiveChat = () => setLocalstorage('active-chat', services[0].name)
 
-const defaultVisibleChats = ['telegram', 'fb', 'flowdock']
+const defaultVisibleChats = ['telegram', 'fb']
 const getVisibleServices = () =>
   getLocalstorage('visible-services', defaultVisibleChats)
-const addVisibleService = service =>
+const addVisibleService = (service) =>
   appendUnique({
     key: 'visible-services',
     value: service,
     fn: getVisibleServices,
   })
 
-const removeVisibleService = service =>
+const removeVisibleService = (service) =>
   removeFromList({
     key: 'visible-services',
     listfn: getVisibleServices,
@@ -35,14 +35,14 @@ const removeVisibleService = service =>
   })
 
 const getSlackChannels = () => getLocalstorage('slack-channels', [])
-const addSlackChannel = channel =>
+const addSlackChannel = (channel) =>
   appendUnique({
     key: 'slack-channels',
     value: channel,
     fn: getSlackChannels,
   })
 
-const removeSlackChannel = channel =>
+const removeSlackChannel = (channel) =>
   removeFromList({
     key: 'slack-channels',
     listfn: getSlackChannels,
@@ -53,7 +53,7 @@ const resetLocalStorage = () => window.localStorage.clear()
 
 const getServices = () => [
   ...services,
-  ...getSlackChannels().map(name => ({
+  ...getSlackChannels().map((name) => ({
     name: `${name}-slack`,
     url: getSlackUrl(name),
   })),
