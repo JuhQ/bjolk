@@ -4,7 +4,7 @@ const { sendNotification } = require('./utils')
 const webContents = remote.getCurrentWebContents()
 const { session } = webContents
 
-const selector = '.P6z4j'
+const selector = '.ZKn2B'
 
 // All credit to Franz for whatsapp fix
 // https://github.com/meetfranz/recipe-whatsapp/blob/master/webview.js
@@ -36,7 +36,7 @@ const checkWhatsapp = () => {
 
       const registrations = await window.navigator.serviceWorker.getRegistrations()
 
-      registrations.forEach(r => {
+      registrations.forEach((r) => {
         r.unregister()
       })
     } catch (err) {
