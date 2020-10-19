@@ -1,6 +1,6 @@
 const { app, Menu, shell } = require('electron')
 
-module.exports = mainWindow => {
+module.exports = (mainWindow) => {
   const template = [
     {
       label: 'Application',
@@ -12,7 +12,7 @@ module.exports = mainWindow => {
         { type: 'separator' },
         {
           label: 'Quit',
-          accelerator: 'Command+Q',
+          accelerator: 'CmdOrCtrl+Q',
           click() {
             app.quit()
           },
