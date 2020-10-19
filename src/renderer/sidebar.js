@@ -42,7 +42,13 @@ const createSideBar = () => {
 
     setHtml(sidebar, html)
 
-    getButtons().forEach(button => {
+    if (list.length > 8) {
+      addClass('.sidebar', 'should-scroll')
+    } else {
+      removeClass('.sidebar', 'should-scroll')
+    }
+
+    getButtons().forEach((button) => {
       button.addEventListener('click', activateChatScreen)
     })
   } else {
@@ -51,7 +57,7 @@ const createSideBar = () => {
 }
 
 const clearSideBarEventListeners = () => {
-  getButtons().forEach(button => {
+  getButtons().forEach((button) => {
     button.removeEventListener('click', activateChatScreen)
   })
 }
