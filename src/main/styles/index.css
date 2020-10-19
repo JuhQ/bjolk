@@ -41,7 +41,7 @@ body {
   height: calc(100% - 80px);
 }
 
-.sidebar:hover .chats {
+.sidebar.should-scroll:hover .chats {
   overflow-y: scroll;
 }
 
