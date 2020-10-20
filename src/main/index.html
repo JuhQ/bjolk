@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="styles/index.css">
     <link rel="stylesheet" type="text/css" href="styles/buttons.css">
     <link rel="stylesheet" type="text/css" href="styles/sliders.css">
-    <link rel="stylesheet" type="text/css" href="styles/slack.css">
+    <link rel="stylesheet" type="text/css" href="styles/custom-chats.css">
   </head>
   <body>
     <div class="window-draggable"></div>
@@ -38,13 +38,24 @@
             <h3>Slack</h3>
 
             <p>
-              <form id="add-slack">
+              <form id="add-slack" class="add-custom-chat">
                 <input type="text" id="slack-channel-name" />
                 <button type="submit">Add new slack</button>
               </form>
             </p>
 
             <div id="slack-list"></div>
+
+            <h3>Mattermost</h3>
+
+            <p>
+              <form id="add-mattermost" class="add-custom-chat">
+                <input type="text" id="mattermost-channel-name" value="https://" />
+                <button type="submit">Add new mattermost</button>
+              </form>
+            </p>
+
+            <div id="mattermost-list"></div>
 
             <p>
               <button class="bjolk-button" id="reset-localstorage">

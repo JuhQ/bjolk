@@ -120,11 +120,13 @@ body {
   width: 355px;
 }
 
+.mattermost-service-list,
 .slack-service-list {
   display: inline-flex;
   align-items: center;
 }
 
+.mattermost-service-list p,
 .slack-service-list p {
   width: 325px;
 }

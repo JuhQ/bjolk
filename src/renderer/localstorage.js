@@ -20,6 +20,7 @@ const resetActiveChat = () => setLocalstorage('active-chat', services[0].name)
 const defaultVisibleChats = ['telegram', 'fb']
 const getVisibleServices = () =>
   getLocalstorage('visible-services', defaultVisibleChats)
+
 const addVisibleService = (service) =>
   appendUnique({
     key: 'visible-services',
@@ -34,7 +35,11 @@ const removeVisibleService = (service) =>
     value: service,
   })
 
-const getSlackChannels = () => getLocalstorage('slack-channels', [])
+const getChannelsFor = (name) => getLocalstorage(`${name}-channels`, [])
+
+const getSlackChannels = () => getChannelsFor('slack')
+const getMattermostChannels = () => getChannelsFor('mattermost')
+
 const addSlackChannel = (channel) =>
   appendUnique({
     key: 'slack-channels',
@@ -42,10 +47,24 @@ const addSlackChannel = (channel) =>
     fn: getSlackChannels,
   })
 
+const addMattermostChannel = (channel) =>
+  appendUnique({
+    key: 'mattermost-channels',
+    value: channel,
+    fn: getMattermostChannels,
+  })
+
 const removeSlackChannel = (channel) =>
   removeFromList({
     key: 'slack-channels',
     listfn: getSlackChannels,
+    value: channel,
+  })
+
+const removeMattermostChannel = (channel) =>
+  removeFromList({
+    key: 'mattermost-channels',
+    listfn: getMattermostChannels,
     value: channel,
   })
 
@@ -56,6 +75,14 @@ const getServices = () => [
   ...getSlackChannels().map((name) => ({
     name: `${name}-slack`,
     url: getSlackUrl(name),
+  })),
+  ...getMattermostChannels().map((url) => ({
+    name: `${url
+      .replace(/\//g, '')
+      .replace('https', '')
+      .replace(/(:|\.)/g, '-')
+      .replace('-', '')}-mattermost`,
+    url,
   })),
 ]
 
@@ -74,13 +101,15 @@ module.exports = {
   setActiveChat,
   resetActiveChat,
   getSlackChannels,
+  getMattermostChannels,
   addSlackChannel,
+  addMattermostChannel,
   removeSlackChannel,
+  removeMattermostChannel,
   resetLocalStorage,
   getVisibleServices,
   addVisibleService,
   removeVisibleService,
-  defaultVisibleChats,
   setDoNotDisturb,
   getDoNotDisturb,
 }

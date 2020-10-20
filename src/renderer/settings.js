@@ -1,14 +1,18 @@
+/* eslint-disable no-use-before-define */
 const {
   resetLocalStorage,
   addSlackChannel,
+  addMattermostChannel,
   addVisibleService,
   removeVisibleService,
   getSlackChannels,
+  getMattermostChannels,
   getActiveChat,
   getServices,
   resetActiveChat,
   setDoNotDisturb,
   removeSlackChannel,
+  removeMattermostChannel,
   getVisibleServices,
 } = require('./localstorage')
 const { createSideBar, clearSideBarEventListeners } = require('./sidebar')
@@ -20,13 +24,12 @@ const handleResetLocalstorageButton = () =>
     .querySelector('#reset-localstorage')
     .addEventListener('click', resetLocalStorage)
 
-const printList = () => {
+const printSlackList = () => {
   const container = document.getElementById('slack-list')
 
   const html = getSlackChannels()
     .map(
-      channel =>
-        `
+      (channel) => `
         <div class="slack-service-list">
           <p>${channel}</p>
           <button class="bjolk-button bjolk-delete-button delete-slack" name="${channel}">Delete</button>
@@ -37,7 +40,23 @@ const printList = () => {
   setHtml(container, html)
 }
 
-const deleteSlackListener = element => ({ target }) => {
+const printMattermostList = () => {
+  const container = document.getElementById('mattermost-list')
+
+  const html = getMattermostChannels()
+    .map(
+      (channel) => `
+        <div class="mattermost-service-list">
+          <p>${channel}</p>
+          <button class="bjolk-button bjolk-delete-button delete-mattermost" name="${channel}">Delete</button>
+        </div>`,
+    )
+    .join('')
+
+  setHtml(container, html)
+}
+
+const deleteSlackListener = (element) => ({ target }) => {
   const channel = target.getAttribute('name')
 
   removeSlackChannel(channel)
@@ -58,22 +77,52 @@ const deleteSlackListener = element => ({ target }) => {
   createSideBar()
 }
 
+const deleteMattermostListener = (element) => ({ target }) => {
+  const channel = target.getAttribute('name')
+
+  removeMattermostChannel(channel)
+
+  clearSideBarEventListeners()
+
+  // does not remove event listeners hooked to the webview
+  document.getElementById(`service-${channel}-mattermost`).remove()
+
+  element.removeEventListener('click', deleteMattermostListener)
+
+  if (getActiveChat() === channel) {
+    resetActiveChat()
+  }
+
+  listSlackChannels()
+  listMattermostChannels()
+  createSideBar()
+}
+
 const listSlackChannels = () => {
-  printList()
+  printSlackList()
 
   document
     .querySelectorAll('.delete-slack')
-    .forEach(element =>
+    .forEach((element) =>
       element.addEventListener('click', deleteSlackListener(element)),
+    )
+}
+const listMattermostChannels = () => {
+  printMattermostList()
+
+  document
+    .querySelectorAll('.delete-mattermost')
+    .forEach((element) =>
+      element.addEventListener('click', deleteMattermostListener(element)),
     )
 }
 
 const handleSlackChannelCreation = () => {
-  document.querySelector('#add-slack').addEventListener('submit', event => {
+  document.querySelector('#add-slack').addEventListener('submit', (event) => {
     event.preventDefault()
 
     const input = document.getElementById('slack-channel-name')
-    const name = input.value
+    const name = input.value.trim()
 
     addSlackChannel(name)
 
@@ -84,6 +133,26 @@ const handleSlackChannelCreation = () => {
 
     listSlackChannels()
   })
+}
+
+const handleMattermostChannelCreation = () => {
+  document
+    .querySelector('#add-mattermost')
+    .addEventListener('submit', (event) => {
+      event.preventDefault()
+
+      const input = document.getElementById('mattermost-channel-name')
+      const url = input.value.replace('https://https://', 'https://').trim()
+
+      addMattermostChannel(url)
+
+      createSideBar()
+      addWebview({ name: url, url })
+
+      input.value = ''
+
+      listMattermostChannels()
+    })
 }
 
 const handleChatVisibility = () => {
@@ -108,7 +177,7 @@ const handleChatVisibility = () => {
 }
 
 const handleServiceShowing = () => {
-  document.querySelectorAll('.show-service').forEach(element =>
+  document.querySelectorAll('.show-service').forEach((element) =>
     element.addEventListener('click', ({ target }) => {
       const name = target.getAttribute('name')
       if (target.checked === false) {
@@ -136,8 +205,10 @@ const handleDoNotDisturb = () => {
 const settingsPageInit = () => {
   handleResetLocalstorageButton()
   handleSlackChannelCreation()
+  handleMattermostChannelCreation()
   handleChatVisibility()
   listSlackChannels()
+  listMattermostChannels()
   handleServiceShowing()
   handleDoNotDisturb()
 }
