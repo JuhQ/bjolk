@@ -1,5 +1,5 @@
 const getButtons = () => document.querySelectorAll('.sidebar .chats button')
-const negate = fn => data => !fn(data)
+const negate = (fn) => (data) => !fn(data)
 const setHtml = (element, html) => {
   // eslint-disable-next-line
   element.innerHTML = html
@@ -9,7 +9,7 @@ const appendHtml = (element, html) => {
   element.innerHTML += html
 }
 
-const getElement = selector => document.querySelector(selector)
+const getElement = (selector) => document.querySelector(selector)
 
 const addClass = (selector, classToAdd) =>
   !!getElement(selector) && getElement(selector).classList.add(classToAdd)
@@ -17,19 +17,19 @@ const addClass = (selector, classToAdd) =>
 const removeClass = (selector, classToAdd) =>
   !!getElement(selector) && getElement(selector).classList.remove(classToAdd)
 
-const filterDuplicates = list =>
+const filterDuplicates = (list) =>
   list.reduce((acc, item) => (acc.includes(item) ? acc : [...acc, item]), [])
 
-const getSlackUrl = name => `https://${name}.slack.com/`
+const getSlackUrl = (name) => `https://${name}.slack.com/`
 
-const getDomain = url => {
+const getDomain = (url) => {
   const parser = document.createElement('a')
   parser.href = url
 
   return parser.hostname
 }
 
-const favicon = url =>
+const favicon = (url) =>
   `https://www.google.com/s2/favicons?domain=${getDomain(url)}`
 
 module.exports = {

@@ -15,7 +15,7 @@ const {
 
 const services = getServices()
 
-const setActiveChatScreen = name => {
+const setActiveChatScreen = (name) => {
   removeClass('.chat-window.active', 'active')
   addClass(`#service-${name}.chat-window`, 'active')
 
@@ -25,7 +25,7 @@ const setActiveChatScreen = name => {
   setActiveChat(name)
 }
 
-const setActiveWindowFromKeyDown = index => {
+const setActiveWindowFromKeyDown = (index) => {
   const button = getButtons()[index]
   if (button) {
     setActiveChatScreen(button.getAttribute('name'))
@@ -54,9 +54,9 @@ const setChatButtonNotificationCount = ({ service, url, value }) => {
   }
 }
 
-const listenToSingleWebview = webview => {
+const listenToSingleWebview = (webview) => {
   webview.addEventListener('dom-ready', () => {
-    webview.addEventListener('ipc-message', event => {
+    webview.addEventListener('ipc-message', (event) => {
       if (event.channel.eventType === 'keydown') {
         setActiveWindowFromKeyDown(event.channel.value)
       }
