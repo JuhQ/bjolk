@@ -3,6 +3,7 @@ const {
   getActiveChat,
   setActiveChat,
   getDoNotDisturb,
+  getVisibleServices,
 } = require('./localstorage')
 const {
   setHtml,
@@ -10,10 +11,8 @@ const {
   removeClass,
   addClass,
   getButtons,
-  favicon,
+  shortenName,
 } = require('./utils')
-
-const services = getServices()
 
 const setActiveChatScreen = (name) => {
   removeClass('.chat-window.active', 'active')
@@ -39,23 +38,29 @@ const activateCurrentChat = () => {
   addClass(`.chat-window#service-${currentActiveChat}`, 'active')
 }
 
-const setChatButtonNotificationCount = ({ service, url, value }) => {
-  const button = document.querySelector(`button#button-${service}`)
+const setChatButtonNotificationCount = ({ service, value }) => {
+  const button = document.querySelector(`button#button-${service} span`)
   if (button) {
     if (value !== button.count) {
+      const serviceName = shortenName(service)
+
       button.count = value
-      const faviconImage = `<img src="${favicon(url)}"><br/>`
-      if (value) {
-        setHtml(button, `${faviconImage} ${service} (${value})`)
-      } else {
-        setHtml(button, `${faviconImage} ${service}`)
-      }
+      const notification = value ? `(${value}) ` : ''
+
+      setHtml(button, `${notification}${serviceName}`)
     }
   }
 }
 
 const listenToSingleWebview = (webview) => {
+  // hack
+  if (webview.customListenerAdded) {
+    return
+  }
+
   webview.addEventListener('dom-ready', () => {
+    // eslint-disable-next-line no-param-reassign
+    webview.customListenerAdded = true
     webview.addEventListener('ipc-message', (event) => {
       if (event.channel.eventType === 'keydown') {
         setActiveWindowFromKeyDown(event.channel.value)
@@ -77,6 +82,7 @@ const listenToWebviews = () => {
     .querySelectorAll('.chat-container webview')
     .forEach(listenToSingleWebview)
 }
+
 const userAgent =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36'
 
@@ -90,22 +96,36 @@ const webviewHtml = ({ name, url }) => `<webview
 
 const getChatContainer = () => document.querySelector('.chat-container')
 
-const createWebViews = () => {
+const createChatViews = () => {
   const container = getChatContainer()
+
+  setHtml(container, '')
+
+  const visibleServices = getVisibleServices()
+  const services = getServices().filter(({ name }) =>
+    visibleServices.includes(name),
+  )
 
   services.forEach(({ name, url }) => {
     appendHtml(container, webviewHtml({ name, url }))
   })
 
-  activateCurrentChat()
   listenToWebviews()
 }
 
-const addWebview = ({ name, url }) => {
-  appendHtml(getChatContainer(), webviewHtml({ name: `${name}-slack`, url }))
+const createWebViews = () => {
+  createChatViews()
+  activateCurrentChat()
+}
+
+const addWebview = ({ name, service, url }) => {
+  appendHtml(
+    getChatContainer(),
+    webviewHtml({ name: `${name}-${service}`, url }),
+  )
 
   const webview = document.querySelector(
-    `.chat-container webview#service-${name}-slack`,
+    `.chat-container webview#service-${name}-${service}`,
   )
 
   listenToSingleWebview(webview)
@@ -113,6 +133,7 @@ const addWebview = ({ name, url }) => {
 
 module.exports = {
   createWebViews,
+  createChatViews,
   addWebview,
   setActiveWindowFromKeyDown,
   setActiveChatScreen,

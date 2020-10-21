@@ -16,7 +16,7 @@ const {
   getVisibleServices,
 } = require('./localstorage')
 const { createSideBar, clearSideBarEventListeners } = require('./sidebar')
-const { addWebview } = require('./webviews')
+const { addWebview, createChatViews } = require('./webviews')
 const { getSlackUrl, setHtml } = require('./utils')
 
 const handleResetLocalstorageButton = () =>
@@ -127,7 +127,7 @@ const handleSlackChannelCreation = () => {
     addSlackChannel(name)
 
     createSideBar()
-    addWebview({ name, url: getSlackUrl(name) })
+    addWebview({ name, url: getSlackUrl(name), service: 'slack' })
 
     input.value = ''
 
@@ -147,7 +147,7 @@ const handleMattermostChannelCreation = () => {
       addMattermostChannel(url)
 
       createSideBar()
-      addWebview({ name: url, url })
+      addWebview({ name: url, url, service: 'mattermost' })
 
       input.value = ''
 
@@ -190,6 +190,7 @@ const handleServiceShowing = () => {
       }
 
       createSideBar()
+      createChatViews()
     }),
   )
 }

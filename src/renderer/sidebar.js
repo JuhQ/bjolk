@@ -9,6 +9,7 @@ const {
   addClass,
   removeClass,
   favicon,
+  shortenName,
 } = require('./utils')
 const { setActiveChatScreen } = require('./webviews')
 
@@ -25,8 +26,8 @@ const activateChatScreen = ({ currentTarget }) => {
 
 const createSideBarButton = ({ name, url }) =>
   `<button id="button-${name}" name="${name}">
-    <img src="${favicon(url)}" class="chat-icon"><br/>
-    ${name}
+    <img src="${favicon(url)}">
+    <span>${shortenName(name)}</span>
   </button>`
 
 const createSideBar = () => {
@@ -42,7 +43,7 @@ const createSideBar = () => {
 
     setHtml(sidebar, html)
 
-    if (list.length > 8) {
+    if (list.length > 9) {
       addClass('.sidebar', 'should-scroll')
     } else {
       removeClass('.sidebar', 'should-scroll')

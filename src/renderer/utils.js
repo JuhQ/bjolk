@@ -1,11 +1,10 @@
+/* eslint-disable no-param-reassign */
 const getButtons = () => document.querySelectorAll('.sidebar .chats button')
 const negate = (fn) => (data) => !fn(data)
 const setHtml = (element, html) => {
-  // eslint-disable-next-line
   element.innerHTML = html
 }
 const appendHtml = (element, html) => {
-  // eslint-disable-next-line
   element.innerHTML += html
 }
 
@@ -32,6 +31,8 @@ const getDomain = (url) => {
 const favicon = (url) =>
   `https://www.google.com/s2/favicons?domain=${getDomain(url)}`
 
+const shortenName = (name) => name.substring(0, 10).replace(/-$/, '').trim()
+
 module.exports = {
   addClass,
   removeClass,
@@ -42,4 +43,5 @@ module.exports = {
   appendHtml,
   getSlackUrl,
   favicon,
+  shortenName,
 }
