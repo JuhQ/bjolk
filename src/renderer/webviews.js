@@ -45,7 +45,7 @@ const setChatButtonNotificationCount = ({ service, value }) => {
       const serviceName = shortenName(service)
 
       button.count = value
-      const notification = value ? `(${value}) ` : ''
+      const notification = value ? `<strong>(${value})</strong> ` : ''
 
       setHtml(button, `${notification}${serviceName}`)
     }
