@@ -13,6 +13,7 @@ const browserWindowConfig = {
   frame: false,
   icon: path.join(__dirname, 'assets/icons/icon-512.icns'),
   webPreferences: {
+    webviewTag: true,
     nodeIntegration: true,
     // contextIsolation: false,
   },
