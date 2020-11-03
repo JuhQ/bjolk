@@ -1,8 +1,5 @@
-const {
-  getServices,
-  getActiveChat,
-  getVisibleServices,
-} = require('./localstorage')
+const { getActiveChat } = require('./localstorage')
+const { getServices, getVisibleServices } = require('./components/services')
 const {
   getButtons,
   setHtml,

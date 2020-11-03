@@ -1,20 +1,24 @@
 /* eslint-disable no-use-before-define */
 const {
   resetLocalStorage,
+  getActiveChat,
+  resetActiveChat,
+} = require('./localstorage')
+const {
   addSlackChannel,
   addMattermostChannel,
-  addVisibleService,
-  removeVisibleService,
   getSlackChannels,
   getMattermostChannels,
-  getActiveChat,
-  getServices,
-  resetActiveChat,
-  setDoNotDisturb,
   removeSlackChannel,
   removeMattermostChannel,
+} = require('./components/custom-chats')
+const {
+  getServices,
+  addVisibleService,
+  removeVisibleService,
   getVisibleServices,
-} = require('./localstorage')
+} = require('./components/services')
+const { setDoNotDisturb } = require('./components/do-not-disturb')
 const { createSideBar, clearSideBarEventListeners } = require('./sidebar')
 const { addWebview, createChatViews } = require('./webviews')
 const { getSlackUrl, setHtml } = require('./utils')
@@ -24,97 +28,92 @@ const handleResetLocalstorageButton = () =>
     .querySelector('#reset-localstorage')
     .addEventListener('click', resetLocalStorage)
 
-const printSlackList = () => {
-  const container = document.getElementById('slack-list')
+const printCustomChat = ({ service, fn }) => {
+  const container = document.getElementById(`${service}-list`)
 
-  const html = getSlackChannels()
+  const html = fn()
     .map(
       (channel) => `
-        <div class="slack-service-list">
+        <div class="${service}-service-list">
           <p>${channel}</p>
-          <button class="bjolk-button bjolk-delete-button delete-slack" name="${channel}">Delete</button>
+          <button class="bjolk-button bjolk-delete-button delete-${service}" name="${channel}">Delete</button>
         </div>`,
     )
     .join('')
 
   setHtml(container, html)
+}
+
+const printSlackList = () => {
+  printCustomChat({ service: 'slack', fn: getSlackChannels })
 }
 
 const printMattermostList = () => {
-  const container = document.getElementById('mattermost-list')
+  printCustomChat({ service: 'mattermost', fn: getMattermostChannels })
+}
 
-  const html = getMattermostChannels()
-    .map(
-      (channel) => `
-        <div class="mattermost-service-list">
-          <p>${channel}</p>
-          <button class="bjolk-button bjolk-delete-button delete-mattermost" name="${channel}">Delete</button>
-        </div>`,
-    )
-    .join('')
+const deleteCustomChatListener = ({ service, channel, rmFn, listFn }) => {
+  rmFn(channel)
 
-  setHtml(container, html)
+  clearSideBarEventListeners()
+
+  // does not remove event listeners hooked to the webview
+  document.getElementById(`service-${channel}-${service}`).remove()
+
+  if (getActiveChat() === channel) {
+    resetActiveChat()
+  }
+
+  listFn()
+  createSideBar()
 }
 
 const deleteSlackListener = (element) => ({ target }) => {
-  const channel = target.getAttribute('name')
-
-  removeSlackChannel(channel)
-
-  clearSideBarEventListeners()
-
-  // does not remove event listeners hooked to the webview
-  document.getElementById(`service-${channel}-slack`).remove()
+  deleteCustomChatListener({
+    service: 'slack',
+    channel: target.getAttribute('name'),
+    rmFn: removeSlackChannel,
+    listFn: listSlackChannels,
+  })
 
   element.removeEventListener('click', deleteSlackListener)
-
-  if (getActiveChat() === channel) {
-    resetActiveChat()
-  }
-
-  // eslint-disable-next-line
-  listSlackChannels()
-  createSideBar()
 }
 
 const deleteMattermostListener = (element) => ({ target }) => {
-  const channel = target.getAttribute('name')
-
-  removeMattermostChannel(channel)
-
-  clearSideBarEventListeners()
-
-  // does not remove event listeners hooked to the webview
-  document.getElementById(`service-${channel}-mattermost`).remove()
+  deleteCustomChatListener({
+    service: 'mattermost',
+    channel: target.getAttribute('name'),
+    rmFn: removeMattermostChannel,
+    listFn: listMattermostChannels,
+  })
 
   element.removeEventListener('click', deleteMattermostListener)
+}
 
-  if (getActiveChat() === channel) {
-    resetActiveChat()
-  }
+const listCustomChatChannels = ({ service, printListFn, deleteListener }) => {
+  printListFn()
 
-  listSlackChannels()
-  listMattermostChannels()
-  createSideBar()
+  document
+    .querySelectorAll(`.delete-${service}`)
+    .forEach((element) =>
+      element.addEventListener('click', deleteListener(element)),
+    )
 }
 
 const listSlackChannels = () => {
-  printSlackList()
-
-  document
-    .querySelectorAll('.delete-slack')
-    .forEach((element) =>
-      element.addEventListener('click', deleteSlackListener(element)),
-    )
+  listCustomChatChannels({
+    service: 'slack',
+    printListFn: printSlackList,
+    deleteListener: deleteSlackListener,
+  })
 }
-const listMattermostChannels = () => {
-  printMattermostList()
 
-  document
-    .querySelectorAll('.delete-mattermost')
-    .forEach((element) =>
-      element.addEventListener('click', deleteMattermostListener(element)),
-    )
+const listMattermostChannels = () => {
+  listCustomChatChannels({
+    service: 'mattermost',
+    printListFn: printMattermostList,
+    deleteListener: deleteMattermostListener,
+  })
 }
 
 const handleSlackChannelCreation = () => {

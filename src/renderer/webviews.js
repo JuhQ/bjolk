@@ -1,10 +1,6 @@
-const {
-  getServices,
-  getActiveChat,
-  setActiveChat,
-  getDoNotDisturb,
-  getVisibleServices,
-} = require('./localstorage')
+const { getActiveChat, setActiveChat } = require('./localstorage')
+const { getServices, getVisibleServices } = require('./components/services')
+const { getDoNotDisturb } = require('./components/do-not-disturb')
 const {
   setHtml,
   appendHtml,
