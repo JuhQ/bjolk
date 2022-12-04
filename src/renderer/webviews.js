@@ -80,7 +80,7 @@ const listenToWebviews = () => {
 }
 
 const userAgent =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36'
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/1537.36 (KHTML, like Gecko) Chrome/274.0.3729.131 Safari/2537.36'
 
 const webviewHtml = ({ name, url }) => `<webview
     src="${url}"

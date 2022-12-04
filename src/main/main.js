@@ -8,14 +8,15 @@ const createMenu = require('./menu')
 let mainWindow
 
 const browserWindowConfig = {
-  width: 1080,
-  height: 700,
+  width: 1400,
+  height: 800,
   frame: false,
   icon: path.join(__dirname, 'assets/icons/icon-512.icns'),
   webPreferences: {
     webviewTag: true,
     nodeIntegration: true,
-    // contextIsolation: false,
+    contextIsolation: false,
+    enableRemoteModule: true,
   },
 }
 
