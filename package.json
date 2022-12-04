@@ -11,7 +11,7 @@
   "author": "Juha Tauriainen <juha@bin.fi>",
   "license": "MIT",
   "dependencies": {
-    "electron": "20.1.1",
+    "electron": "22.0.0",
     "feather-icons": "4.28.0"
   },
   "devDependencies": {
